@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Wallet ヘルプ | Salesforce</title>
+<style>
+  :root{
+    --blue:#0176d3; --blue-dark:#014486; --navy:#032d60; --sky:#eaf5fe;
+    --ink:#181818; --gray:#54698d; --line:#e5e5e5; --bg:#f3f6f9; --card:#fff;
+    --ok:#2e844a; --okbg:#ebf7ee; --warn:#8f5c00; --warnbg:#fdf4e6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Salesforce Sans","Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Meiryo",sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;-webkit-font-smoothing:antialiased}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header.top{background:linear-gradient(120deg,var(--navy),var(--blue-dark));color:#fff;padding:34px 24px 30px}
+  header.top .wrap{max-width:1180px;margin:0 auto}
+  .crumb{font-size:12.5px;color:#bcd9f5;margin-bottom:14px}
+  .crumb a{color:#bcd9f5}
+  header.top h1{margin:0 0 10px;font-size:30px;font-weight:700;letter-spacing:.01em}
+  header.top p{margin:0;max-width:820px;font-size:15px;color:#e4f0fb}
+  .badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11.5px;padding:3px 10px;border-radius:20px;margin-top:14px}
+  .layout{max-width:1180px;margin:0 auto;display:flex;gap:34px;padding:30px 24px 70px}
+  nav.side{flex:0 0 240px;position:sticky;top:20px;align-self:flex-start;max-height:calc(100vh - 40px);overflow:auto;font-size:13.5px}
+  nav.side .grp{font-weight:700;color:var(--navy);margin:18px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  nav.side a{display:block;padding:5px 10px;border-radius:6px;color:var(--gray);border-left:2px solid transparent}
+  nav.side a:hover{background:var(--sky);color:var(--blue-dark);text-decoration:none}
+  main{flex:1;min-width:0}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px 30px;margin-bottom:22px;scroll-margin-top:16px}
+  section h2{margin:0 0 6px;font-size:22px;color:var(--navy);display:flex;align-items:center;gap:10px}
+  section h2 .ic{font-size:22px}
+  section .lead{color:var(--gray);margin:0 0 18px;font-size:14.5px}
+  h3{font-size:16.5px;color:var(--blue-dark);margin:22px 0 8px}
+  p{margin:0 0 12px}
+  ul{margin:0 0 12px;padding-left:22px}
+  li{margin:4px 0}
+  code{background:#f1f4f8;border:1px solid var(--line);border-radius:4px;padding:1px 6px;font-size:12.5px}
+  .edition{display:flex;gap:10px;align-items:flex-start;background:var(--sky);border:1px solid #cfe6fb;border-radius:8px;padding:12px 16px;font-size:13px;color:var(--navy);margin-bottom:18px}
+  .edition b{color:var(--blue-dark)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:8px 0 4px}
+  .feat{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:#fbfdff}
+  .feat h4{margin:0 0 6px;font-size:15px;color:var(--navy)}
+  .feat p{margin:0;font-size:13.5px;color:var(--gray)}
+  .note{background:var(--warnbg);border:1px solid #f2dcaf;border-radius:8px;padding:12px 16px;font-size:13px;color:var(--warn);margin:14px 0}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+  .steps li{counter-increment:s;position:relative;padding:10px 0 10px 44px;border-bottom:1px dashed var(--line)}
+  .steps li:last-child{border-bottom:none}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:9px;width:28px;height:28px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+  .steps li b{color:var(--navy)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  th{background:var(--sky);color:var(--navy);font-weight:700}
+  .res{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .res a{display:block;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:#fff;font-size:13.5px}
+  .res a:hover{border-color:var(--blue);background:var(--sky);text-decoration:none}
+  .res .k{display:block;font-size:11px;color:var(--gray);margin-bottom:3px}
+  footer{max-width:1180px;margin:0 auto;padding:24px;color:var(--gray);font-size:12px;border-top:1px solid var(--line)}
+  details{border:1px solid var(--line);border-radius:8px;margin:8px 0;background:#fbfdff}
+  details summary{cursor:pointer;padding:11px 16px;font-weight:700;color:var(--navy);font-size:14px}
+  details .body{padding:2px 18px 12px;font-size:14px}
+  @media(max-width:860px){.layout{flex-direction:column}nav.side{position:static;flex:none;max-height:none;display:flex;flex-wrap:wrap;gap:4px}nav.side .grp{width:100%}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="crumb"><a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_about.htm&language=ja&type=5">Salesforce Help</a> &rsaquo; Docs &rsaquo; Digital Wallet</div>
+    <h1>Digital Wallet</h1>
+    <p>Salesforce 製品ポートフォリオ全体の利用状況を、一か所で確認・分析できる無料のアカウント管理ツール。ライセンス使用状況、従量課金製品の消費、製品上限をまとめて把握できます。</p>
+    <span class="badge">Lightning Experience ／ Enterprise・Unlimited Edition ／ サンドボックス不可</span>
+  </div>
+</header>
+
+<div class="layout">
+<nav class="side" aria-label="目次">
+  <div class="grp">はじめに</div>
+  <a href="#overview">概要</a>
+  <a href="#features">主要機能</a>
+  <a href="#access">アクセス方法と権限</a>
+  <div class="grp">ライセンス・上限</div>
+  <a href="#license">ライセンス使用状況</a>
+  <a href="#limits">製品上限</a>
+  <div class="grp">従量課金製品の消費</div>
+  <a href="#consumption">消費の監視</a>
+  <a href="#buying">購入モデル</a>
+  <a href="#multi">複数契約の消費</a>
+  <div class="grp">通知・分析</div>
+  <a href="#alerts">しきい値アラート</a>
+  <a href="#tags">消費タグ（標準）</a>
+  <a href="#customtags">カスタム消費タグ</a>
+  <div class="grp">リファレンス</div>
+  <a href="#glossary">用語集</a>
+  <a href="#faq">FAQ</a>
+  <a href="#troubleshoot">トラブルシューティング</a>
+  <a href="#support">サポート</a>
+  <a href="#resources">公式リンク</a>
+</nav>
+
+<main>
+<section id="overview">
+  <h2><span class="ic">🎯</span>概要</h2>
+  <p class="lead">Digital Wallet は、Salesforce 製品ポートフォリオ全体の利用実態を確認・分析するためのワンストップのハブです。</p>
+  <div class="edition"><span>📌</span><div><b>提供 Edition:</b> Lightning Experience。Enterprise および Unlimited Edition で利用可能。<b>サンドボックスでは利用不可</b>（サンドボックスの使用量は追跡されますが、Digital Wallet 自体は本番環境で開きます）。</div></div>
+  <table>
+    <tr><th>操作</th><th>必要なユーザー権限</th></tr>
+    <tr><td>Consumption Cards タブの表示</td><td>View Consumption、View Consumption Tags、Manage Consumption Tags、または Assign Consumption Tags</td></tr>
+    <tr><td>Consumption Analytics タブの表示</td><td>View Consumption</td></tr>
+    <tr><td>License Utilization タブの表示</td><td>View License Utilization</td></tr>
+    <tr><td>Your Account アプリの利用</td><td>Manage Billing、または Your Account App 管理者のユーザー権限セット</td></tr>
+  </table>
+  <div class="note">💡 <b>用語について:</b> 2025 年 10 月 14 日に Data Cloud は <b>Data 360</b> に名称変更されました。移行期間中は、アプリ内やドキュメントに旧称「Data Cloud」が残る場合がありますが、機能は変わりません。Digital Wallet の利用には <b>Data 360 ライセンス</b>が必要です（Customer Data Platform（CDP）ライセンスでは利用できません）。</div>
+</section>
+
+<section id="features">
+  <h2><span class="ic">✨</span>主要機能</h2>
+  <p class="lead">Digital Wallet でできること。</p>
+  <div class="grid">
+    <div class="feat"><h4>🪪 ライセンス使用状況</h4><p>席数ベース製品のライセンス使用状況を、License Utilization タブでリアルタイムに確認。</p></div>
+    <div class="feat"><h4>💳 従量課金製品の消費監視</h4><p>Consumption Cards タブで、従量課金製品の使用状況をほぼリアルタイムで監視・分析。</p></div>
+    <div class="feat"><h4>📏 製品上限の追跡</h4><p>Product Limits タブで、購入済みの許容量と使用状況を一つの画面で確認し、容量を計画的に管理。</p></div>
+    <div class="feat"><h4>🔔 しきい値アラート</h4><p>フローテンプレートで「消費 80%」「ライセンス割り当て 95%」などの節目を自動通知。</p></div>
+    <div class="feat"><h4>📊 Consumption Insights</h4><p>標準消費タグを使った Data 360 レポート。エージェント・アクション・消費元ごとに内訳を把握。</p></div>
+    <div class="feat"><h4>📈 Consumption Analytics</h4><p>標準消費タグを使った Tableau Next の可視化。詳細分析と消費予測に対応。</p></div>
+    <div class="feat"><h4>🏷️ カスタム消費タグ</h4><p>部門・コストセンターなど自社の区分で消費を分類し、チャージバックや ROI 分析に活用。</p></div>
+  </div>
+</section>
+
+<section id="access">
+  <h2><span class="ic">🔑</span>アクセス方法と権限</h2>
+  <p class="lead">Digital Wallet アプリまたは Your Account アプリから利用します。</p>
+  <h3>アクセス方法</h3>
+  <ul>
+    <li>アプリケーションランチャーで <b>Digital Wallet</b> を検索して選択します。</li>
+    <li>Digital Wallet アプリには複数のタブがあり、各機能に対応します。表示されるタブは、製品の購入モデルと、タブの閲覧権限の有無で決まります。</li>
+    <li>サンドボックスの使用量は追跡されますが、Digital Wallet は<b>本番環境</b>で開く必要があります。</li>
+    <li>Data 360 のガバナンス機能は新規組織で既定で有効ですが、データアクセスを許可するには<b>ポリシーの作成が必要</b>です。</li>
+  </ul>
+  <h3>管理者・一般ユーザーのアクセス</h3>
+  <ul>
+    <li><b>管理者:</b> Digital Wallet 対応製品を使う組織の Salesforce 管理者は、Digital Wallet アプリまたは Your Account アプリに自動的にアクセスできます。ただし主要機能の一部には追加の権限が必要です。</li>
+    <li><b>一般ユーザー:</b> 権限セットまたはカスタムプロファイルで「View Consumption」または「View License Utilization」を付与します。</li>
+    <li>Identity ユーザーライセンスのユーザーは、Your Account のユーザー権限経由でのみ Digital Wallet にアクセスできます。</li>
+  </ul>
+  <h3>権限リファレンス</h3>
+  <table>
+    <tr><th>権限・権限セット・ライセンス</th><th>説明</th></tr>
+    <tr><td>View License Utilization</td><td>Digital Wallet アプリと License Utilization タブへのアクセス。席数ベース製品とライセンス情報を見るユーザーに割り当て。</td></tr>
+    <tr><td>View Consumption</td><td>Digital Wallet アプリと Consumption Analytics タブへのアクセス。従量課金製品の使用状況を見るユーザーに割り当て。</td></tr>
+    <tr><td>Manage Billing 権限 / Your Account App 管理者権限セット</td><td>Your Account アプリへのアクセス。Your Account アプリの全ユーザーに割り当て。</td></tr>
+    <tr><td>Data Cloud Architect 権限セット</td><td>Data 360 の全機能へのアクセス。Data 360 を管理するユーザーに割り当て。</td></tr>
+    <tr><td>「Access to manage the template framework templates」権限</td><td>アプリテンプレートの作成・更新・管理。Consumption Analytics（Tableau Next）用の Consumption Tagging アプリをインストールするユーザーに割り当て。</td></tr>
+    <tr><td>Data Cloud User 権限セット</td><td>Data 360 と Tableau Next ダッシュボードのデータ閲覧に必要。一般ユーザーに割り当て。</td></tr>
+    <tr><td>Tableau Next Limited Consumer 権限セット</td><td>一般ユーザーが Consumption Analytics ダッシュボードを見るために必要（同名ライセンスも割り当て）。Digital Wallet には追加費用なしで <b>10 ライセンス</b>が含まれます。</td></tr>
+    <tr><td>Assign Consumption Tags</td><td>既存の消費タグをリソースに割り当て／解除。タグ作成は不要なユーザー向け。</td></tr>
+    <tr><td>Manage Consumption Tags</td><td>消費タグとタググループの作成・編集・削除・割り当て・解除。タグ戦略の責任者向け。</td></tr>
+    <tr><td>View Consumption Tags</td><td>タグ・タググループ・タグ割り当ての読み取り専用アクセス。</td></tr>
+  </table>
+  <h3>タブの表示設定</h3>
+  <p>Digital Wallet のインストール時、標準プロファイルにはタブの表示が有効化されます。別の方法でアクセスを付与した場合は、次のタブの表示設定を <code>Default On</code> にしてください。</p>
+  <ul><li>Consumption Cards</li><li>License Utilization</li><li>Consumption Tags</li><li>Consumption Analytics</li><li>Product Limits</li></ul>
+  <h3>Your Account の Identity ユーザーが Consumption Cards を見る場合</h3>
+  <p>組織全体へのアクセスを与えずに消費カードを見せたい場合は、Identity ユーザーに「Your Account App: Identity User」権限セットライセンスと、「Manage Subscription in Your Account: Identity Users」ユーザー権限の両方を割り当てます。Your Account アプリでは、契約・更新の管理、請求書の表示とダウンロード、Digital Wallet カード向けの追加使用量の購入ができます。</p>
+</section>
+
+<section id="license">
+  <h2><span class="ic">🪪</span>ライセンス使用状況（License Utilization）</h2>
+  <p class="lead">購入した製品と、それに対応する席数ベースのライセンスを一覧できます。</p>
+  <ul>
+    <li>表示される情報はリアルタイムで更新され、ページを再読み込みするたびに最新化されます。数値は<b>その組織に</b>プロビジョニングされた内容を反映します。</li>
+    <li>プロビジョニング数と購入数が食い違うことがまれにあります。多くは更新注文の処理遅延が原因で、詳細は営業担当（Account Executive）に確認してください。</li>
+    <li>製品ごとにライセンスを展開表示でき、「プロビジョニング済み」「割り当て済み」「残り」などの主要指標を確認できます。</li>
+  </ul>
+  <h3>アクセスできる人</h3>
+  <p>少なくとも 1 つの製品が Salesforce から直接販売され、<code>force.com</code> テナントにプロビジョニングされている組織の管理者はアクセスできます。他のユーザーには、カスタムプロファイルまたは権限セットで「View License Utilization」を付与します。</p>
+  <h3>対応する製品とライセンス</h3>
+  <p>Salesforce から直接販売され、顧客の <code>force.com</code> テナントにプロビジョニングされるすべての製品（エディションとアドオンを含む）が対象です。表示するのは<b>ユーザーライセンスと権限セットライセンスのみ</b>です。</p>
+  <div class="note">⚠️ <b>対象外:</b> 他のテナントで販売・プロビジョニングされる製品（MuleSoft、Tableau、Heroku、ExactTarget など。それぞれ別の確認方法があります）／ISV パートナーまたはサードパーティから購入したライセンス／プラットフォームライセンスとユーザー機能ライセンス。</div>
+  <h3>License Utilization タブを開く</h3>
+  <p>アクティブな本番組織には Digital Wallet と License Utilization タブが含まれます。<b>サンドボックス、トライアル組織、デモ組織からは開けません。</b>アプリケーションランチャーから <b>Digital Wallet</b> を開き、従量課金製品もある場合に Consumption Cards タブが表示されたら <b>License Utilization</b> タブをクリックします。製品名は注文書や契約書（Salesforce Enterprise License Agreement（SELA）を含む）の名称と一致します。</p>
+  <h3>製品数量（Product Quantity）の仕組み</h3>
+  <p>Product Quantity に値がある場合、同じ製品（SKU）を複数購入しています。例えば製品 A が「ライセンス A（5）／B（2）／C（1）」を含み、10 ユニット購入した場合、プロビジョニング数は A: 5×10＝50、B: 2×10＝20、C: 1×10＝10 と表示されます。</p>
+  <h3>検索とフィルター</h3>
+  <ul>
+    <li>検索: 製品名またはライセンス名で絞り込み。</li>
+    <li>フィルター: 製品名・ライセンス名・ライセンスタイプなどの条件で絞り込み。</li>
+    <li>両方を使う場合は<b>フィルターが優先</b>され、検索はフィルターの範囲内の結果だけを返します。</li>
+  </ul>
+  <h3>複数の製品から同じライセンスを取得する場合</h3>
+  <p>Chatter External ライセンスのように、同一ライセンスが複数製品に含まれることがあります。製品 A（500）と製品 B（1,000）から取得した場合、製品ごとの内訳は区別されず、どちらの製品の下にも合計 1,500 が表示されます。</p>
+</section>
+
+<section id="limits">
+  <h2><span class="ic">📏</span>製品上限の追跡（Product Limits）</h2>
+  <p class="lead">購入済みの許容量と使用状況を一つの画面で確認し、組織の容量ニーズを先回りして計画します。</p>
+  <div class="edition"><span>📌</span><div><b>必要な権限:</b> View Product Limits（システム管理者プロファイルは既定で保持）。<b>サンドボックスでは利用不可。</b></div></div>
+  <ul>
+    <li>製品上限は、組織が定期的に使用する制限付きリソースを表します。上限の引き上げは営業担当に相談します。</li>
+    <li>Product Limits タブは<b>ある時点のスナップショット</b>です。「Last Processed」はページを読み込んだ時刻です。</li>
+    <li>画面を手動で確認しなくても、使用率が 80%・100% などに達したら通知するフローを作れます。</li>
+  </ul>
+  <table>
+    <tr><th>製品上限</th><th>単位</th><th>説明</th><th>更新頻度</th></tr>
+    <tr><td>Platform Data Storage</td><td>GB</td><td>組織のデータストレージの最大容量</td><td>ほぼリアルタイム</td></tr>
+    <tr><td>Platform File Storage</td><td>GB</td><td>組織のファイルストレージの最大容量</td><td>ほぼリアルタイム</td></tr>
+  </table>
+  <h3>表示項目</h3>
+  <table>
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>Allowance（許容量）</td><td>指定期間（通常は契約期間）に利用できる総容量。上限を増やすアドオンを購入すると反映されます。同じリソースに複数契約がある場合は合算されます。</td></tr>
+    <tr><td>Amount Used（使用量）</td><td>現在の使用量（時点スナップショット）。</td></tr>
+    <tr><td>Utilization Rate（使用率）</td><td>（使用量 ÷ 許容量）× 100%。小数第 1 位で切り捨て（四捨五入しません）。</td></tr>
+    <tr><td>Refresh Frequency（リセット頻度）</td><td>許容量がリセットされる頻度。「Once」は契約期間全体で一度きりの上限を意味します。</td></tr>
+  </table>
+</section>
+
+<section id="consumption">
+  <h2><span class="ic">💳</span>従量課金製品の消費監視（Consumption Cards）</h2>
+  <p class="lead">Data 360、Agentforce などの従量課金製品について、使用状況の推移を監視・観察します。</p>
+  <p>Digital Wallet は Data 360 の中核機能を使い、さまざまなサービスから使用量データを収集して、ほぼリアルタイムで処理し、消費レコードをデータレイクオブジェクト（DLO）として保存します。これにより、従量課金製品を詳細かつ一元的に追跡できます。</p>
+  <h3>できること</h3>
+  <ul>
+    <li>同じ Digital Wallet 対応製品を含む、すべての有効な契約にまたがる総使用量を把握する。</li>
+    <li>全体の使用量と残量を把握する。</li>
+    <li>時系列の傾向とパターンを見つけ、予算編成や購入判断に役立てる。</li>
+  </ul>
+  <div class="note">💡 消費情報は 1 日に複数回更新されますが、状況によってはより時間がかかります。<b>請求書と Digital Wallet の数値が異なる場合は、月次明細書（Monthly Statement）が消費の正式な根拠</b>です。</div>
+  <h3>Consumption Cards ホームページの見方</h3>
+  <table>
+    <tr><th>項目</th><th>内容</th></tr>
+    <tr><td>Last Processed</td><td>Digital Wallet が組織の使用量データを最後に同期した日時（組織の既定タイムゾーン）。</td></tr>
+    <tr><td>Card Name</td><td>消費カードの名前。</td></tr>
+    <tr><td>Credits or Capacity Consumed</td><td>そのカードから、Last Processed 時点までに使用したクレジットまたは容量の合計。</td></tr>
+    <tr><td>Credits or Capacity Remaining</td><td>カードの権利（エンタイトルメント）の残りのクレジットまたは容量。</td></tr>
+    <tr><td>Total Credits or Capacity</td><td>そのカードに紐づく契約を通じて組織に割り当てられた総量。</td></tr>
+    <tr><td>Start Date / End Date</td><td>カードに紐づく契約の開始日・終了日。複数契約が紐づく場合は「Multiple」と表示。</td></tr>
+    <tr><td>Contract</td><td>契約番号をクリックすると、該当エンタイトルメントを含む契約の一覧と、各契約からの消費状況を表示。複数契約の場合は「Multiple」。</td></tr>
+    <tr><td>Pricing Model / Retired バッジ</td><td>契約の価格モデル、またはカードが廃止（Retired）されたことを示す表示。</td></tr>
+  </table>
+  <p>Data Cloud を本番とサンドボックスの両方で使っている場合は、両環境の使用量が表示され、サンドボックスの有効なエンタイトルメントにはカード名に「Sandbox」と付きます。廃止（Retired）されたサンドボックスカードの残クレジット・ストレージは本番カードに移されます。Retired カードは、紐づく契約が有効な間は表示され続け、過去の消費は Retired カードに、新しい消費は移行先カードに記録されます。</p>
+  <h3>消費を監視する方法</h3>
+  <ul>
+    <li>組織の使用状況の俯瞰ビュー。</li>
+    <li>特定の日・期間のデータを示す棒グラフ。</li>
+    <li>サービス別・リソースタイプ別に掘り下げる表と円グラフ（Consumption Insights ページ）。</li>
+    <li>標準提供の Data 360 レポートと Tableau Next の可視化による、現状分析と将来予測。</li>
+  </ul>
+  <h3>Digital Wallet データレイクオブジェクト（DLO）</h3>
+  <p>Digital Wallet のセットアップ時に、データストリームと DLO が組織に作成されます。これらの DLO は生の消費データを取り込み、エンタイトルメントの使用状況を<b>1 時間単位と 1 日単位</b>で追跡します。契約上の乗数（multiplier）を適用して生の使用量を消費クレジットに換算しつつ、購入済みのエンタイトルメントも記録します。拡張 DLO（<code>TenantEnrichedUsageEvent</code>）は、すぐ使えるレポートやダッシュボードの元になる重要なメタデータを提供し、独自レポートの作成にも使えます。</p>
+  <h3>Data Cloud One 構成でのエンタイトルメントプーリング</h3>
+  <p>Data Cloud One 構成では、Data 360 のエンタイトルメントはホーム組織にプールされます。Flex Credits などその他の製品のエンタイトルメントは、使用が発生した組織に別々に保持されます。</p>
+  <h3>月次アカウントサマリー</h3>
+  <p>毎月 <b>10 日</b>に、契約レコードに登録された主請求先担当者とエンタイトルメント通知先担当者へメールで届く月次使用量明細です。使用量ベース製品、エンタイトルメントごとの総使用量、残高、使用タイプ・サブタイプ別の内訳が記載されます。</p>
+  <h3>データ集計タイプ</h3>
+  <table>
+    <tr><th>集計タイプ</th><th>対象</th><th>動作</th></tr>
+    <tr><td><b>SUM</b></td><td>クレジット</td><td>使用量が累積し、削除して空きを作れない製品向け。1 日に複数回計算・表示されます。</td></tr>
+    <tr><td><b>MAX</b></td><td>容量（Capacity）</td><td>ファイルやデータの削除で容量を空けられる製品向け。1 日に複数回スナップショットを取り、前日の<b>最大値</b>をそのカードの日次使用量として表示します。</td></tr>
+    <tr><td><b>LAST</b></td><td>容量（Capacity）</td><td>1 日に複数回取得し、前日末時点の<b>最新スナップショット</b>を日次使用量として表示。その日に報告がなければ「No data reported for this day」と表示されます。</td></tr>
+  </table>
+</section>
+
+<section id="buying">
+  <h2><span class="ic">🧾</span>購入モデル（Buying Models）</h2>
+  <p class="lead">Agentforce や Data 360 などの従量課金製品には 4 つの購入モデルがあり、Digital Wallet はすべての使用量追跡と分析に対応します。</p>
+  <p>購入モデルが違っても、消費インサイトと分析の体験は同じです。異なるのは<b>消費カードに表示される情報</b>だけです。</p>
+  <table>
+    <tr><th>購入モデル</th><th>内容</th><th>消費カードの表示</th></tr>
+    <tr><td><b>Pre-purchased（前払い）</b></td><td>契約期間分のクレジット／容量を前払い。超過分は通常、追加で請求されます。未使用分は契約期間終了時に失効。</td><td>消費量・残量・総割当量と、プログレスバー。</td></tr>
+    <tr><td><b>Pre-committed（事前コミット）</b></td><td>契約期間中の使用量をコミットし、使った分を請求。通常は月次で実績請求。コミット量を使い切らない場合は不足分（shortfall）の請求書が発行されることがあります。</td><td>コミット総量に対する使用量と契約期間。コミット達成の見込みを確認できます。</td></tr>
+    <tr><td><b>Pay-as-you-go（従量課金）</b></td><td>長期コミットなしで、請求サイクルごとに使った分を請求。通常は使用月の翌月に請求。</td><td>現在の請求サイクルの使用量のみ（上限なしのため残量は非表示）。請求サイクルの開始時にリセット。</td></tr>
+    <tr><td><b>Unlimited（無制限）</b></td><td>契約期間中の使用量に上限なし（例: Agentforce の Agentic Enterprise License Agreement）。固定の前払い価格で、超過や不足のリスクがありません。</td><td>契約期間中の総消費クレジットと、契約の開始日・終了日。</td></tr>
+  </table>
+  <div class="note">⚠️ Digital Wallet が追跡するのは、エンタイトルメントごと・組織ごとに<b>アクティブな購入モデル 1 つだけ</b>です。「Dormant」バッジのカードは、別のカードで消費が追跡されていることを意味し、データは参照用（履歴）です。</div>
+</section>
+
+<section id="multi">
+  <h2><span class="ic">📑</span>複数契約の消費（Multi-Contract）</h2>
+  <p class="lead">同じ組織で、同一の Digital Wallet エンタイトルメントを複数の契約で購入しているケース。</p>
+  <p>例えば、Digital Wallet 対応の Data Cloud SKU（Data Services Credits と Data Storage Allocation を含む）と、Einstein 1 SKU（同じエンタイトルメントを含む）を同じ組織で購入すると、ホームページには次の 2 枚のカードが表示されます。</p>
+  <ul>
+    <li><b>Data Services Credits</b> カード: 両 SKU で購入したクレジットがプールされます。</li>
+    <li><b>Data Storage Allocation</b> カード: 両 SKU で購入した容量がプールされます。</li>
+  </ul>
+  <p>各カードの「Contract」には「Multiple」と表示され、クリックすると各契約の一覧と、契約ごとの使用量の引き落とし状況を確認できます。複数契約での超過や引き落としの順序は、製品または SKU の<b>レートカード（Rate Card）</b>で確認するのが最も確実です。</p>
+</section>
+
+<section id="alerts">
+  <h2><span class="ic">🔔</span>しきい値アラート</h2>
+  <p class="lead">使用量がしきい値を超えたことを、関係者へ自動で通知します。</p>
+  <p>Digital Wallet は Flow Builder を使った共通の通知フレームワークを提供し、事前構築済みのフローテンプレートをカスタマイズして有効化します。有効化後は使用量指標を自動で確認し、しきい値を超えると通知を送ります。</p>
+  <h3>通知できる内容の例</h3>
+  <ul>
+    <li>組織が Flex Credits の 80% を使用した。</li>
+    <li>Salesforce ユーザーライセンスの 90% を割り当てた。</li>
+    <li>すべての消費カードの消費クレジットが 70% を超えた。</li>
+    <li>Platform Data Storage の割り当ての 80% を超えた。</li>
+  </ul>
+  <h3>配信方法・通知先</h3>
+  <ul>
+    <li><b>配信:</b> 標準の Salesforce 通知チャネル（アプリ内通知、メール、Slack<b>（消費ベースのアラートのみ）</b>）。利用可能なチャネルは機能と組織の通知配信設定で決まります。</li>
+    <li><b>既定の通知先:</b> システム管理者プロファイルのユーザー。機能ごとに、パブリックグループ、権限セット、プロファイルなどへ変更できます。</li>
+    <li>財務・調達部門は更新予算の計画に、IT 管理者はサービス中断の回避と容量計画に、Revenue Operations は未使用シートの特定とコスト最適化に活用できます。</li>
+    <li>複数の事業部門や製品ラインがある場合は、部門ごとに別のアラートフローを作成できます。</li>
+  </ul>
+  <h3>アラートの種類（公式ドキュメント）</h3>
+  <table>
+    <tr><th>アラート</th><th>概要</th></tr>
+    <tr><td>Consumption Threshold Alerts</td><td>Consumption Threshold Alerts フローを構成し、組織の使用量がしきい値を超えたときに通知。</td></tr>
+    <tr><td>License Utilization Threshold Alerts</td><td>提供テンプレートで、監視するライセンスと通知先を指定。</td></tr>
+    <tr><td>Product Limits Threshold Alerts</td><td>スケジュールフローで、Product Limits の使用率がしきい値を超えたときに指定ユーザーへ通知。</td></tr>
+  </table>
+</section>
+
+<section id="tags">
+  <h2><span class="ic">🏷️</span>標準消費タグと分析ダッシュボード</h2>
+  <p class="lead">消費タグは、従量課金製品の消費の透明性を高めるフレームワークです。</p>
+  <p>標準消費タグは、標準の請求指標に加えて付与される追加のメタデータで、使用パターンをより細かく把握できます。どのエージェント・使用タイプ・機能・ソースが消費を押し上げているかを可視化し、追加投資の判断に役立ちます。</p>
+  <p>タグ付きの消費データは <code>TenantEnrichedUsageEvent</code> DLO に保存され、標準提供の Consumption Insights と Consumption Analytics ダッシュボードの基盤になります。これらのレポートは Digital Wallet の DLO を使うため、<b>標準ダッシュボード・レポート・可視化の表示や更新にコストは発生しません</b>。</p>
+  <table>
+    <tr><th>標準ダッシュボード</th><th>内容</th></tr>
+    <tr><td><b>Consumption Insights</b></td><td>Data 360 レポートで構築。Data Cloud のプロビジョニング時にインストールされます。新規／既存の Data 360 顧客で設定手順が異なります。</td></tr>
+    <tr><td><b>Consumption Analytics</b></td><td>Tableau Next で構築。エージェントやアクションごとの Flex Credits 使用量、リソース別の Data 360 消費などを深掘りできます。</td></tr>
+  </table>
+  <h3>活用の効果</h3>
+  <ul>
+    <li>ビジネスユースケースに紐づく消費パターンを把握する。</li>
+    <li>どのエージェント・アクション・機能・ソースが最も多くのクレジットを消費しているかを特定する。</li>
+    <li>業務やユースケースごとのコスト・ROI を分析する。</li>
+    <li>過去の使用パターンから将来のニーズを予測する。</li>
+  </ul>
+  <h3>関連トピック</h3>
+  <ul>
+    <li><b>消費タグの共有:</b> 既定では消費タグは非公開です。共有すると、強化されたサポートや利用実態に合わせた提案を受けられます。</li>
+    <li><b>Flex Credits の生成 AI プロンプト別消費:</b> Data 360 レポートで、どのプロンプトが最も消費しているかを分解できます。</li>
+    <li><b>カスタムレポート:</b> <code>TenantEnrichedUsageEvent</code> DLO を使って独自のレポート・ダッシュボードを作成できます。</li>
+    <li><b>データのエクスポート:</b> 標準またはカスタムの Data 360 レポートのデータを、外部の BI ツールに書き出せます。</li>
+  </ul>
+</section>
+
+<section id="customtags">
+  <h2><span class="ic">🧩</span>カスタム消費タグ</h2>
+  <p class="lead">部門やコストセンターなど、自社固有の切り口で消費を追跡・最適化します。</p>
+  <p>カスタムタグは「タググループ」と「タグ（値）」で構成されます。例えばタググループ「Department」に対し、Sales・Marketing・Finance・Engineering などのタグを作ります。</p>
+  <h3>目的</h3>
+  <ul>
+    <li>現在の使用量の要因を理解する。</li>
+    <li>最適化の機会を特定する。</li>
+    <li>社内チャージバックとコスト配賦を円滑にする。</li>
+    <li>予算編成と予測の基礎となる、詳細な履歴情報を得る。</li>
+  </ul>
+  <h3>コスト</h3>
+  <p>基本機能（カスタムタグの作成、標準レポートの閲覧）は<b>無料</b>です。次の操作は追加コストが発生しません。</p>
+  <ul>
+    <li>Consumption Insights のデータモデルオブジェクト（DMO）と DLO（<code>TenantEnrichedUsageEvent</code> を含む）へのクエリ。</li>
+    <li>カスタムタグの作成。</li>
+    <li>標準レポート・ダッシュボードの閲覧、基本・拡張セマンティックデータモデル（SDM）の利用。</li>
+    <li>Digital Wallet の DLO を使った独自レポートの作成。</li>
+  </ul>
+  <div class="note">⚠️ <b>コスト対象外にならない例:</b> Digital Wallet データと他のデータオブジェクトを組み合わせた独自の DLO／DMO／SDM の作成とクエリ。既存の Digital Wallet オブジェクトの変更。</div>
+  <h3>導入の流れ</h3>
+  <ol class="steps">
+    <li><b>タグ戦略を決める。</b>「どの部門が先月最も多くクレジットを使ったか」「新プロジェクトは使用量にどう影響したか」など、答えたい問いから逆算して、タググループとタグ、タグを付けるリソースを決めます。</li>
+    <li><b>権限を割り当てる。</b>管理者は全権限を持ちます。一般ユーザーには Consumption Tags 系の権限を役割に応じて付与します（権限ごとに権限セットを作ると柔軟です）。</li>
+    <li><b>Consumption Tagging アプリをインストールする。</b>タグの作成・管理だけならアプリなしで可能ですが、カスタムタグを使った Data 360 レポートや Tableau Next の可視化にはアプリが必要です。Consumption Insights の拡張セマンティックデータモデル（SDM）は削除・編集しないことが推奨されています。</li>
+    <li><b>タグを作成してリソースに割り当てる。</b>使用イベントには、タグを付けたリソースのタグが約 24 時間ごとに自動で付与されます。</li>
+    <li><b>レポートを作る。</b>例えばタググループ「Department」を作成し、データストリームにタグ「Marketing」を割り当てると、拡張 SDM に計算項目「Department」が作られ、部門別の消費レポートを作れます。</li>
+  </ol>
+  <h3>対応する使用タイプ</h3>
+  <p><b>Data 360（対応）:</b> Batch Activations／Batch Calculated Insights／Batch Data Pipeline／Batch Data Transforms／Batch Profile Unification／Data Share Rows Shared（Data Out）／Inferences／Segmentation／Activation DMO - Streaming／Streaming Actions／Streaming Calculated Insights／Streaming Data Pipeline／Streaming Data Transforms／Sub-second Real-Time API。</p>
+  <p><b>Agentforce（対応）:</b> Standard Actions／Custom Actions／Standard Voice Action／Custom Voice Action／Starter Prompts／Standard Prompts／Basic Prompts／Advanced Prompts。プロンプトテンプレート（<code>GenAiPromptTemplate</code>）へのタグ付けは、カスタムおよびオーバーライドされたテンプレートのみ対応です。</p>
+  <p><b>Data 360（非対応）:</b> Data Federation or Data Sharing Rows Accessed／Data Queries／Storage Beyond Allocation／Sub-second Real-Time Profiles &amp; Entities。</p>
+</section>
+
+<section id="glossary">
+  <h2><span class="ic">📚</span>用語集</h2>
+  <p class="lead">Digital Wallet の画面に出てくる主な用語。</p>
+  <table>
+    <tr><th>用語</th><th>定義</th></tr>
+    <tr><td>Card（カード）</td><td>ホームページ上で、使用タイプのグループとそのエンタイトルメントをまとめるコンテナ。</td></tr>
+    <tr><td>Consumption-Based Products（従量課金製品）</td><td>ユーザー数ではなく、使用量の増分（データストレージ GB など）を購入する製品。</td></tr>
+    <tr><td>Entitlement（エンタイトルメント）</td><td>消費型製品が提供する使用タイプのグループについて、組織が購入した使用量。</td></tr>
+    <tr><td>Credit（クレジット）</td><td>特定の Digital Wallet 対応製品やサービス向けに購入できる使用量の増分。期間中は任意のペースで使え、超過しそうなカードには追加購入できます。SUM で集計。</td></tr>
+    <tr><td>Capacity（容量）</td><td>データやファイルを保存できる使用量の増分。期間内に超えられない上限があり、データ／ファイルを削除すれば空けられます。MAX で集計。</td></tr>
+    <tr><td>Usage Type / Usage Subtype</td><td>消費型製品が提供する、指標で定義されたリソース（SMS メッセージ、データクエリなど）／その下位区分（例: フランス宛 SMS）。</td></tr>
+    <tr><td>Raw usage</td><td>ある使用タイプで発生した個々の使用イベントの数。</td></tr>
+    <tr><td>Unit / Multiplier</td><td>生の使用量を割って使用量を求める所定の数／消費した使用量に掛けて総使用量を求める所定の数（通貨や市場価値などで決まる）。</td></tr>
+    <tr><td>Volume-Based Multiplier</td><td>月間消費が特定のしきい値に達すると乗数が自動的に下がる段階的な価格構造。</td></tr>
+    <tr><td>Rate Card（レートカード）</td><td>使用タイプ、使用量 1 単位の定義、換算に使う乗数を示す価格内訳資料。</td></tr>
+    <tr><td>Pre-purchased / Pre-committed / Pay-as-you-go / Unlimited</td><td>購入モデル（<a href="#buying">購入モデル</a>を参照）。</td></tr>
+    <tr><td>Dormant</td><td>別のカードで消費が追跡されているカード。履歴参照用。事前購入の容量はバンドル SKU 経由で受け取った分が失効します。</td></tr>
+    <tr><td>Retired</td><td>残りのエンタイトルメントが別の既存カードに移された状態。過去の消費は Retired カードに残り、新しい消費は移行先で記録されます。</td></tr>
+    <tr><td>Last Processed</td><td>Digital Wallet が組織の使用量データを最後に同期した日時（組織の既定タイムゾーン）。</td></tr>
+    <tr><td>Monthly Account Summary</td><td>毎月 10 日に主請求先担当者らへメール送信される月次使用量明細。</td></tr>
+    <tr><td>Resource / Resource type / Root resource</td><td>使用イベントに関連するリソース（セグメント API 名、エージェントアクション API 名など）／リソースに関連するオブジェクト／使用を生んだ大元のリソース（例: エージェント API 名。Flex Credits のみ）。</td></tr>
+    <tr><td>Standard tag / Custom Tag</td><td>Salesforce が管理し自動で付与されるタグ／顧客が定義・管理して各リソースに適用するタグ。</td></tr>
+    <tr><td>License Type</td><td>対応するライセンスタイプは、ユーザーライセンスと権限セットライセンス。</td></tr>
+    <tr><td>Licenses Provisioned / Assigned / Remaining</td><td>契約上利用できるライセンス総数／管理者がユーザーに割り当てた総数／プロビジョニング済み − 割り当て済み。</td></tr>
+  </table>
+</section>
+
+<section id="faq">
+  <h2><span class="ic">❓</span>FAQ（基礎編）</h2>
+  <p class="lead">Digital Wallet の仕組みと、情報の読み方。</p>
+  <details open><summary>消費データはどのくらいの頻度で更新されますか？</summary><div class="body">
+    <p>ほぼリアルタイムで処理され、通常は 1 日に複数回更新されます。多くの消費データは通常の条件下で数時間ごとに更新されますが、複数の分散サービスからデータが流れてくるため、タイミングは変動します。初期プロビジョニング、契約変更、新製品の有効化は、完全に反映されるまで <b>24〜48 時間</b>かかることがあります。</p>
+    <p><b>運用監視・レポート・消費パターンの観察には Digital Wallet を使い、正式な請求・支払いの判断には、必ず月次明細書と請求書を参照してください。</b>数値が異なる場合は、月次明細書が正式な根拠です。</p>
+    <p>「Last Processed」は、その製品と消費カードについて新しい使用量データを最後に正常処理した時刻です。新しい使用量が記録されなければ変わりません。実際に使用しているのに 48 時間以上古い場合は、Salesforce カスタマーサポートに調査を依頼してください。</p>
+  </div></details>
+  <details><summary>Consumption Insights の棒グラフに、データの空白や「データなし」の日付範囲があるのはなぜですか？</summary><div class="body">
+    <p>ホームページのカードサマリー（Credits Consumed／Credits Remaining）が、最新で最も信頼できる使用量と残高のスナップショットです。棒グラフの空白は、次のようなケースで発生します。</p>
+    <ul>
+      <li><b>製品を最近 Digital Wallet で有効化した:</b> 日次の詳細チャートは移行日以降のものだけです。累計値はホームページで正しく確認できます。</li>
+      <li><b>組織を最近プロビジョニングした:</b> 新しい組織では、初期データ処理が完了するまでの最初の数日間は空白が想定されます。</li>
+      <li><b>参照期間が契約開始日より前に及ぶ:</b> 契約開始が 30 日前なのに「過去 90 日」を選ぶと、最初の 60 日分はデータがありません。</li>
+      <li><b>製品機能が非計測（unmetered）:</b> SKU のアップグレードで、以前は計測されていた機能が非計測になることがあります。その場合は請求用の使用量が記録されず、データが表示されません。</li>
+    </ul>
+  </div></details>
+  <details><summary>Digital Wallet はどのタイムゾーンでデータを表示しますか？</summary><div class="body">
+    <p>消費データの使用量と日付は UTC で保存され、Digital Wallet に表示するとき<b>組織の既定タイムゾーン</b>に変換されます。</p>
+    <ul>
+      <li>ユーザープロファイルが太平洋時間でも、組織の既定が東部時間なら、Digital Wallet は東部時間で表示します。</li>
+      <li>消費チャートの日次の棒は、組織のカレンダー上の日で区切られます。</li>
+      <li>組織のタイムゾーン設定を変更すると、Digital Wallet のデータはすべて新しいタイムゾーンに合わせて再配置されます。</li>
+    </ul>
+    <p>他の製品では挙動が異なる場合があります。Developer Console で消費データをクエリすると UTC の生データが返り、Data Explorer ではユーザーのタイムゾーンで表示されます。</p>
+  </div></details>
+</section>
+
+<section id="troubleshoot">
+  <h2><span class="ic">🛠️</span>トラブルシューティング</h2>
+  <p class="lead">よくある問題と対処法。</p>
+  <details open><summary>消費カードが表示されない</summary><div class="body">
+    <p>次の要件をすべて満たしているか確認します。</p>
+    <ul>
+      <li>本番組織にいる（サンドボックスでは Digital Wallet を利用できません）。</li>
+      <li>組織で Data Cloud（Data 360）が有効になっている。</li>
+      <li>一般ユーザーの場合、「View Consumption」権限が割り当てられている。</li>
+      <li>Consumption Cards タブの表示設定が <code>Default On</code>。</li>
+      <li>Customer Data Platform（CDP）ライセンスではなく、Data Cloud Provisioning ライセンスを持っている。</li>
+      <li>Identity ユーザーの場合は、Your Account アプリ経由でアクセスしている。</li>
+    </ul>
+  </div></details>
+  <details><summary>Digital Wallet が組織に表示されない／アプリランチャーにタブがない</summary><div class="body">
+    <ul>
+      <li>Consumption Cards タブは、Digital Wallet 対応の従量課金製品を購入している場合にのみ表示されます。</li>
+      <li>消費カードには Data 360 の有効化が必要です。自動プロビジョニングできない場合は、Data 360 を手動で有効にしてください。</li>
+      <li>一般ユーザーは、適切な権限があるか確認します。</li>
+      <li>権限があるのに見えない場合は、プロファイルまたは権限セットのタブ設定が原因のことが多いため、管理者に <code>Default On</code> への変更を依頼します。</li>
+    </ul>
+  </div></details>
+  <details><summary>License Utilization タブが表示されない／一部製品のライセンスが見えない</summary><div class="body">
+    <ul>
+      <li>タブへのアクセス権を確認します。権限セットまたはプロファイルのタブ表示を <code>Default On</code> にします。</li>
+      <li>MuleSoft や Tableau など、買収した企業由来の製品は、ライセンス情報を別のページやポータルで提供します。Digital Wallet が対応するのは、Salesforce から直接販売され <code>force.com</code> テナントにプロビジョニングされる製品のみです。</li>
+      <li>「Data failed to load. Try again later.」と表示され、License Utilization タブが空白の場合は、<code>force.com</code> テナントにプロビジョニングされた製品がある組織にいるか確認し、カスタマーサポートまたは営業担当に連絡します。</li>
+    </ul>
+  </div></details>
+  <details><summary>Digital Wallet の設定ページが見つからない</summary><div class="body">
+    <p>Digital Wallet が有効な本番組織にいるか確認します。設定ページは、サンドボックスや Data Cloud One のコンパニオン組織では利用できません。</p>
+  </div></details>
+  <details><summary>Consumption Tagging アプリをインストールできない</summary><div class="body">
+    <p>設定ページからのインストール時に、<code>TenantEnrichedUsageEvent</code> DLO が選択したデータスペースにない、または読み込めない旨の警告が出る場合があります。原因は、Digital Wallet アプリが正常に動作していないか、Data 360 ガバナンスポリシーにより DLO へのアクセス権がないことです。</p>
+    <p>まず Consumption Cards タブが表示されるか確認します。表示されなければカスタマーサポートへ連絡します。表示されるなら DLO へのアクセス権が不足している可能性が高いため、Data 360 のポリシーベースのガバナンスを確認するか、管理者に相談します。</p>
+  </div></details>
+  <details><summary>アプリのインストール履歴に「404 NOT_FOUND」の警告が出る</summary><div class="body">
+    <p><code>readiness_dataspace_query_dmo</code> タスクの警告は、インストーラーが Consumption Insights の DMO が既にインストール済みでないかを確認しているものです。<b>無視して問題ありません。</b></p>
+  </div></details>
+  <details><summary>「View Consumption Insights by Tags」ダッシュボードにデータが表示されない</summary><div class="body">
+    <p>「This report can no longer be edited or run. Your administrator has disabled all reports for the custom object, or its relationships have changed.」と表示される場合は、ダッシュボードとレポートを削除して再インストールします。<b>手順は記載の順序どおりに実施してください。</b></p>
+    <ol class="steps">
+      <li><b>ダッシュボード</b> | <b>すべてのフォルダー</b> を開く。</li>
+      <li>「Consumption Insights by Tags」フォルダーを開き、「Digital Wallet Consumption Insights by Tags」ダッシュボードを削除（他のダッシュボードがあれば移動または削除）。</li>
+      <li><b>レポート</b> | <b>すべてのフォルダー</b> を開く。</li>
+      <li>「Consumption Insights by Tags」フォルダーを開き、Digital Wallet のレポートをすべて削除（他のレポートがあれば移動または削除）。</li>
+      <li>アプリケーションランチャーの<b>ごみ箱</b>で、ダッシュボードとレポートを完全に削除。</li>
+      <li>ダッシュボードの「すべてのフォルダー」に戻り、Consumption Insights by Tags フォルダーを削除。</li>
+      <li>レポートの「すべてのフォルダー」に戻り、同フォルダーを削除。</li>
+    </ol>
+    <p>その後は毎日の cron ジョブが残りの作業を行うため、翌日に再インストールされたダッシュボードとレポートを確認します。</p>
+  </div></details>
+</section>
+
+<section id="support">
+  <h2><span class="ic">🙋</span>サポートを受けるには</h2>
+  <p class="lead">問い合わせ内容によって窓口が異なります。</p>
+  <table>
+    <tr><th>内容</th><th>窓口</th></tr>
+    <tr><td>契約・金額に関する質問、追加クレジットの購入、超過の相談</td><td>営業担当（Account Executive）</td></tr>
+    <tr><td>従量課金製品そのものに関する質問（仕組み、技術的な問題、使用タイプの説明など）</td><td>通常どおり、Salesforce ヘルプからテクニカルサポートケースを作成</td></tr>
+    <tr><td>Digital Wallet に関するその他の質問（表示が不正確、動作しない、エンタイトルメントや消費データの疑問）</td><td>Your Account サポートチームにチケットを作成</td></tr>
+  </table>
+  <p>Your Account サポートチームへの連絡手順: ① Your Account アプリのホームページを開く → ② 青い <b>Contact Us</b> リンクをクリック → ③ ケースを送信。</p>
+  <p>連絡する前に、Digital Wallet の FAQ（公式ヘルプ）も確認してください。</p>
+</section>
+
+<section id="resources">
+  <h2><span class="ic">🔗</span>公式リンク</h2>
+  <p class="lead">元の公式ヘルプ記事（日本語表示設定のページ。本文は英語の場合があります）。</p>
+  <div class="res">
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_about.htm&language=ja&type=5"><span class="k">概要</span>About Digital Wallet</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_permissions.htm&language=ja&type=5"><span class="k">権限</span>Digital Wallet Permissions</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_access.htm&language=ja&type=5"><span class="k">アクセス</span>Access Digital Wallet</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_glossary.htm&language=ja&type=5"><span class="k">用語集</span>Digital Wallet Glossary of Terms</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_license_utilization.htm&language=ja&type=5"><span class="k">ライセンス</span>View License Utilization</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_monitor_usage.htm&language=ja&type=5"><span class="k">消費監視</span>Monitor Usage for Consumption-Based Products</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_buying_models.htm&language=ja&type=5"><span class="k">購入モデル</span>Buying Models</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_multiple_contracts.htm&language=ja&type=5"><span class="k">複数契約</span>Multi-Contract Consumption</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_product_limits.htm&language=ja&type=5"><span class="k">製品上限</span>Track Product Limits Utilization</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_get_notified.htm&language=ja&type=5"><span class="k">アラート</span>Get Notified When You Cross Usage Thresholds</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_usage_tags_overview.htm&language=ja&type=5"><span class="k">標準タグ</span>Standard Consumption Tags</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_custom_tags_intro.htm&language=ja&type=5"><span class="k">カスタムタグ</span>Custom Tags</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_faq_fundamentals.htm&language=ja&type=5"><span class="k">FAQ</span>FAQ: Digital Wallet Fundamentals</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_troubleshoot.htm&language=ja&type=5"><span class="k">トラブル対応</span>Troubleshoot Digital Wallet</a>
+    <a href="https://help.salesforce.com/s/articleView?id=xcloud.wallet_get_support.htm&language=ja&type=5"><span class="k">サポート</span>Get Digital Wallet Support</a>
+  </div>
+</section>
+</main>
+</div>
+
+<footer>
+  出典: Salesforce Help「Digital Wallet」（Release 264.0.0、英語版ドキュメント）を日本語に翻訳・再構成した非公式のまとめです。製品仕様の正式な根拠は公式ヘルプを参照してください。本ページは公式ヘルプのうち、概要・権限・アクセス・用語集・ライセンス・消費監視・購入モデル・複数契約・製品上限・アラート・タグ・FAQ・トラブルシューティング・サポートの記事を収録しています（各アラート設定手順、カスタムレポート作成、Consumption Analytics の詳細手順などの下位記事は未収録）。
+</footer>
+</body>
+</html>
